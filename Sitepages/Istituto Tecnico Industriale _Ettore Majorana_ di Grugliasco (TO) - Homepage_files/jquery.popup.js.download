@@ -1,0 +1,176 @@
+﻿// Nikita Lebedev's blog, nazz.me/simple-jquery-popup
+(function($) {
+  $.fn.simplePopup = function(event) {
+
+    var simplePopup = {
+
+      settings: {
+        hashtag: "#/",
+        url: "popup",
+        event: event || "click"
+      },
+
+      // Events
+      initialize: function(self) {
+
+        var popup = $(".js__popup");
+        var body = $(".js__p_body");
+        var close = $(".js__p_close");
+        var routePopup = simplePopup.settings.hashtag + simplePopup.settings.url;
+
+        var cssClasses = self[0].className;
+
+        if ( cssClasses.indexOf(" ") >= 0 ) {
+          cssClasses = cssClasses.split(" ");
+
+          for (key in cssClasses) {
+            if ( cssClasses[key].indexOf("js__p_") === 0 ) {
+              cssClasses = cssClasses[key]
+            }
+          };
+        }
+
+         var name = cssClasses.replace("js__p_", "");
+
+         // We redefine the variables if there is an additional popap
+         if (name !== "start") {
+           var NEW_URL = "another_popup";
+
+           name = name.replace("_start", "_popup");
+           popup = $(".js__" + name);
+           routePopup = simplePopup.settings.hashtag + NEW_URL;
+         };
+
+		  // Call when have event
+          self.on(simplePopup.settings.event, function() {
+          simplePopup.show(popup, body, routePopup);
+		  
+		  $('.p_content').html('');
+		  
+		  var h=40;
+		  var s=60;
+		  
+		  if(self.attr('ref')=='annunci'){
+				$('.p_content').html(self.parents("div.box-annuncio:first").children('.box-annuncio-pop-up').html());
+				popup.height($('.p_content').height() + h);
+				popup.offset({'top':$(document).scrollTop()+s})
+		  }
+		  else if(self.attr('id').indexOf("box") >=0){
+			  
+			    var res = self.attr('id').split(";");
+			  
+				$('.p_content').html($('#'+res[1]).html());
+				popup.height($('.p_content').height() + h);
+				popup.offset({'top':$(document).scrollTop()+s})
+		  }
+		  else if(self.attr('ref')=='gallery')
+		  {
+				$('.p_content').html(self.parent().parent().find("div.content_gallery").html());
+				$('.p_content').find('.flexslider').flexslider({pausePlay: true});
+				h=70;
+				popup.height($('.p_content').height() + h);
+				s=($(window).height()-$('.popup_gallery').height())/2;
+				popup.offset({'top':$(document).scrollTop()+s})
+		  }
+		  else if(self.attr('ref')=='image')
+		  {
+		        var src = self.first().attr('src-data');
+				var campion = self.first().find('p').text();
+				$('.p_content').html('<img id="img_popup" width="100%" alt="" src="' + src + '"><p>'+campion+'</p>');
+				
+				$('#img_popup').load(function(){
+				
+				h=40;
+				popup.height($('.p_content').height() + h);
+				s=($(window).height()-$('.popup_gallery').height())/2;	
+				popup.offset({'top':$(document).scrollTop()+s});
+				
+				});
+
+		  }
+		  else if(self.hasClass('video'))
+		  {
+		        var src = self.attr('href');
+				$('.p_content').html('<iframe width="560" height="315" src="' + src + '" frameborder="0" allowfullscreen></iframe>');
+				
+				popup.height($('.p_content').height() + h);
+				popup.offset({'top':$(document).scrollTop()+s});
+
+		  }
+		  else
+		  {
+		        $('.p_content').html(self.parents("table:first").next('div').html());
+				popup.height($('.p_content').height() + h);
+				popup.offset({'top':$(document).scrollTop()+s})
+		  }
+		  
+          return false;
+        });
+
+        $(window).on("load", function() {
+          simplePopup.hash(popup, body, routePopup);
+        });
+
+        // Close
+        body.on("click", function() {
+          simplePopup.hide(popup, body);
+        });
+
+        close.on("click", function() {
+          simplePopup.hide(popup, body);
+          return false;
+        });
+
+        // Closure of the button "Esc"
+        $(window).keyup(function(e) {
+          if (e.keyCode === 27) {
+            simplePopup.hide(popup, body);
+          }
+        });
+		
+		
+
+      },
+
+      // Centering method
+      centering: function(self) {
+        var marginLeft = -self.width()/2;
+        return self.css("margin-left", marginLeft);
+      },
+
+      // The overall function of the show
+      show: function(popup, body, routePopup) {
+        simplePopup.centering(popup);
+        body.removeClass("js__fadeout");
+        popup.removeClass("js__slide_top");
+        //location.hash = routePopup;
+		
+      },
+
+      // The overall function of the hide
+      hide: function(popup, body) {
+        popup.addClass("js__slide_top");
+        body.addClass("js__fadeout");
+        popup.offset({ 'top': -300 })
+        //location.hash = simplePopup.settings.hashtag;
+		$('.p_content').html('');
+      },
+
+      // Watch hash in URL
+      hash: function(popup, body, routePopup) {
+        if (location.hash === routePopup) {
+          simplePopup.show(popup, body, routePopup);
+        }
+      }
+
+    };
+
+    // In loop looking for what is called
+    return this.each(function() {
+      var self = $(this);
+      simplePopup.initialize(self);
+    });
+
+  };
+})(jQuery);
+
