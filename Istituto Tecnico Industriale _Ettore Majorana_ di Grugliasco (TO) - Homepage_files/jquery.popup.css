@@ -1,0 +1,84 @@
+﻿.popup {
+  /*position:fixed; */
+  position:absolute;
+  z-index:2000; 
+  top:40px; 
+  left:50%;
+  width:1000px; height:400px; background:#fff;
+  -moz-box-shadow:0px 0px 40px #000;;
+  -webkit-box-shadow:0px 0px 40px #000;
+  box-shadow:0 0 40px #000;
+  -moz-transition:top 400ms;
+  -o-transition:top 400ms;
+  -webkit-transition:top 400ms;
+  transition:top 400ms;
+}
+
+.popup_gallery {
+  max-width:800px; max-height:700px; background:#fff;
+  width:60%;
+  min-height:230px
+}
+
+
+@media screen and (max-width: 600px) {	
+.popup {width:500px;}
+.popup_gallery { width:90% !important;}
+}
+
+@media screen and (max-width: 500px) {	
+.popup {width:350px;}
+}
+
+@media screen and (max-width: 400px) {	
+.popup {width:90%}
+}
+
+@media screen and (max-width: 300px) {	
+
+}
+
+@media screen and (max-width: 200px) {	
+
+}
+
+  .p_content { padding:20px 20px 20px 20px }
+  .p_anch {
+    float:left; position:relative; z-index:1000; width:100%;
+    margin:80px 0 0 0; text-align:center; font-size:18px;
+  }
+  .p_anch a { color:#000; }
+  .p_anch a:hover { text-decoration:none; }
+  .p_anch_bottom { margin:1500px 0 0 0; padding:0 0 50px 0; }
+  .p_close {font-size: 2em;font-weight:900;height: 12px;padding: 15px 11px 0 0;position: absolute;right: 2px;top: -10px;width: 16px;}
+  .p_close span { display:block; width:18px; height:5px; background:#333; }
+  .p_close span:first-child {
+      -ms-transform:rotate(45deg);
+      -webkit-transform:rotate(45deg);
+    transform:rotate(45deg);
+  }
+  
+  .p_close span:last-child {
+    margin:-5px 0 0;
+      -ms-transform:rotate(135deg);
+      -webkit-transform:rotate(135deg);
+    transform:rotate(135deg);
+  }
+  .p_body {
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0, 0, 0, 0.7);
+      -moz-transition:opacity 400ms;
+      -o-transition:opacity 400ms;
+      -webkit-transition:opacity 400ms;
+    transition:opacity 400ms;
+	z-index: 1000;
+  }
+
+
+/* JS-styles — declaratively */
+.js__popup {border-top: 8px solid #0057a4;}
+  .js__p_start {}
+  .js__p_close {}
+  .js__p_body {}
+  .js__slide_top { height:0; overflow:hidden; display:none; top:-300px}
+  .js__fadeout { height:0; overflow:hidden; opacity:0; display:none;}
